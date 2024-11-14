@@ -29,6 +29,11 @@ def backtest(data, model, predictors, start=1, step=1): # It trains a machine le
 def find_team_averages(team): # returns the mean of the team's last 10 games
     rolling = team.rolling(10).mean()
     return rolling
+def shift_col(team, col_name): # take the value from the next game and shift it down 1 row
+    next_col = team[col_name].shift(-1)
+    return next_col
+def add_col(df, col_name): 
+    return df.groupby("team", group_keys=False).apply(lambda x: shift_col(x, col_name))
 def main():
 
     df = pd.read_csv("nba_games.csv", index_col=0)
@@ -87,6 +92,17 @@ def main():
 
     df_rolling = df[list(selected_cols) + ["won", "team", "season"]]
     df_rolling = df_rolling.groupby(["team", "season"], group_keys=False).apply(find_team_averages)
+    rolling_cols = [f"{col}_10" for col in df_rolling.columns]
+    df_rolling.columns = rolling_cols
+
+    df = pd.concat([df, df_rolling], axis=1)
+
+    df = df.dropna()
+    df["home_next"] = add_col(df, "home")
+    df["team_opp_next"] = add_col(df, "team_opp")
+    df["date_next"] = add_col(df, "date")
+
+    df = df.copy()
 
 if "__main__" == __name__:
     main()
