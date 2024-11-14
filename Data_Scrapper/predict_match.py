@@ -3,12 +3,32 @@ from sklearn.model_selection import TimeSeriesSplit
 from sklearn.feature_selection import SequentialFeatureSelector
 from sklearn.linear_model import RidgeClassifier
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import accuracy_score
 
 
 def add_target(team): # Informs us if the team won the next game or not
     team["target"] = team["won"].shift(-1)
     return team
+def backtest(data, model, predictors, start=1, step=1): # It trains a machine learning model on 'start' amount of seasons,
+# it splits the data, so that the model cannot see
+#the actual decision when it is predicting
+    all_predictions = []
+    seasons = sorted(data["season"].unique())
+    for i in range(start, len(seasons), step):
+        season = seasons[i]
+        train=data[data["season"] < season]
+        test =data[data["season"] == season]
+        model.fit(train[predictors], train["target"])
+        preds = model.predict(test[predictors])
+        preds = pd.Series(preds, index=test.index)
 
+        combined = pd.concat([test["target"], preds], axis=1)
+        combined.columns = ["actual", "prediction"]
+        all_predictions.append(combined)
+    return pd.concat(all_predictions)
+def find_team_averages(team): # returns the mean of the team's last 10 games
+    rolling = team.rolling(10).mean()
+    return rolling
 def main():
 
     df = pd.read_csv("nba_games.csv", index_col=0)
@@ -24,7 +44,7 @@ def main():
 
     # reassign target values to 0,1 or 2 instead of having a NaN value when its the last game
     df = df.groupby("team", group_keys=False).apply(add_target)
-    df["target"][pd.isnull(df["target"])] =2
+    df["target"][pd.isnull(df["target"])] = 2
     df['target'] = df['target'].astype(int, errors="ignore")
 
     # cleaning up all null values and checking if there are any
@@ -56,6 +76,17 @@ def main():
     predictors = list(selected_cols[sfs.get_support()])
     print(predictors)
 
-    # print(df)
+
+    predictions = backtest(df, rr, predictors)
+    print(predictions)
+    predictions = predictions[predictions["actual"]!=2]
+    accuracy_score(predictions["actual"], predictions["prediction"])
+
+    # Consider that a team has an advantage when they are the home team so they have a higher probability of winning
+    df.groupby("home").apply(lambda x: x[x["won"]==1].shape() / x.shape[0])
+
+    df_rolling = df[list(selected_cols) + ["won", "team", "season"]]
+    df_rolling = df_rolling.groupby(["team", "season"], group_keys=False).apply(find_team_averages)
+
 if "__main__" == __name__:
     main()

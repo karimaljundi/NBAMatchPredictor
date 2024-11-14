@@ -64,8 +64,8 @@ async def scrape_game(standings_file):
         with open(save_path, "w+", encoding='utf-8') as f:
             f.write(html)
 async def main():
-    # for season in SEASONS:
-    #     await scrape_season(season)
+    for season in tqdm(SEASONS, desc="Processing seasons", leave=True):
+        await scrape_season(season)
     start_time = time.time()
     print(f"Starting scrape at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
