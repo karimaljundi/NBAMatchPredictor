@@ -6,25 +6,33 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
 
 
-def add_target(team): # Informs us if the team won the next game or not
-    team["target"] = team["won"].shift(-1)
-    return team
-def backtest(data, model, predictors, start=1, step=1): # It trains a machine learning model on 'start' amount of seasons,
+def add_target(group): # Informs us if the team won the next game or not
+    group["target"] = group["won"].shift(-1)
+    return group
+def backtest(data, model, predictors, start=2, step=1):# It trains a machine learning model on 'start' amount of seasons,
 # it splits the data, so that the model cannot see
 #the actual decision when it is predicting
+
     all_predictions = []
+    
     seasons = sorted(data["season"].unique())
+    
     for i in range(start, len(seasons), step):
         season = seasons[i]
-        train=data[data["season"] < season]
-        test =data[data["season"] == season]
+        train = data[data["season"] < season]
+        test = data[data["season"] == season]
+        
         model.fit(train[predictors], train["target"])
+        
         preds = model.predict(test[predictors])
         preds = pd.Series(preds, index=test.index)
-
         combined = pd.concat([test["target"], preds], axis=1)
         combined.columns = ["actual", "prediction"]
+
         all_predictions.append(combined)
+    if not all_predictions:
+        print("Warning: all_predictions is empty. Returning an empty DataFrame.")
+        return pd.DataFrame()
     return pd.concat(all_predictions)
 def find_team_averages(team): # returns the mean of the team's last 10 games
     rolling = team.rolling(10).mean()
@@ -47,14 +55,21 @@ def main():
     del df["mp_opp.1"]
     del df["index_opp"]
 
+    # Debugging: Check the shape of df before applying add_target
+    print("Shape of df before adding target:", df.shape)
+    
     # reassign target values to 0,1 or 2 instead of having a NaN value when its the last game
     df = df.groupby("team", group_keys=False).apply(add_target)
+    
+
+    df[df["team"] == "GSW"]
+
+    
     df["target"][pd.isnull(df["target"])] = 2
     df['target'] = df['target'].astype(int, errors="ignore")
 
     # cleaning up all null values and checking if there are any
-    nulls = pd.isnull(df)
-    nulls = nulls.sum()
+    nulls = pd.isnull(df).sum()
     nulls = nulls[nulls> 0]
     valid_cols = df.columns[~df.columns.isin(nulls.index)]
 
@@ -65,7 +80,7 @@ def main():
     #init Algorithms from sklearn
     rr = RidgeClassifier(alpha=1)
     split = TimeSeriesSplit(n_splits=3)
-    sfs = SequentialFeatureSelector(rr, n_features_to_select=30, direction="forward",cv=split)
+    sfs = SequentialFeatureSelector(rr, n_features_to_select=30, direction="forward",cv=split, n_jobs=1)
 
     # Remove the filtered columns from the dataframe since they will not be able to help determine if a team will win or not
     removed_cols = ["season", "date", "won", "target", "team", "team_opp"]
@@ -103,6 +118,7 @@ def main():
     df["date_next"] = add_col(df, "date")
 
     df = df.copy()
+    print(df)
 
 if "__main__" == __name__:
     main()
