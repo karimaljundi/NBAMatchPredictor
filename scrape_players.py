@@ -26,13 +26,12 @@ for year in years:
     with open("players/{}.html".format(year)) as f:
         page = f.read()
     soup = BeautifulSoup(page, "html.parser")
-    soup.find('tr', class_="thead")
+    soup.find('tr', class_="thead").decompose()
     player_table = soup.find('table',id="per_game_stats")
     player = pd.read_html(str(player_table))[0]
     player["Year"] = year
     df.append(player)
 players = pd.concat(df)
-print(players)
+players.to_csv("players.csv")
     
-# print(html)
 
