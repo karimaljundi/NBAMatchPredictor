@@ -1,0 +1,52 @@
+.player-details {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.player-info, .player-stats, .player-awards {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-card {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    color: #1d1d1d; /* Dark color for the title */
+}
+
+h2 {
+    color: #ffcc00; /* NBA yellow color for subtitles */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #1d1d1d; /* Dark background for header */
+    color: #ffffff; /* White text for header */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Light gray on hover */
+}
+
+.player-awards {
+    font-style: italic;
+    color: #555; /* Gray color for awards text */
+}

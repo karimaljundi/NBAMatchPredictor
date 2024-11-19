@@ -1,0 +1,13 @@
+.player-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.player-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc; /* Light border for separation */
+}
+
+.player-item:last-child {
+    border-bottom: none; /* Remove border for the last item */
+}

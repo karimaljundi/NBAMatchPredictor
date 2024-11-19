@@ -1,0 +1,32 @@
+.navbar {
+    background-color: #1d1d1d; /* Dark background */
+    padding: 10px 20px;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-logo {
+    color: #ffcc00; /* NBA yellow color */
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-item {
+    color: #ffffff; /* White text */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.navbar-item:hover {
+    color: #ffcc00; /* Change to NBA yellow on hover */
+}

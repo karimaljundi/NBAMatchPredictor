@@ -1,0 +1,66 @@
+.home {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.home-header {
+    background-color: #1d1d1d; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.search-button {
+    background-color: #ffcc00; /* NBA yellow color */
+    color: #1d1d1d; /* Dark text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #e6b800; /* Darker yellow on hover */
+}
+
+.home-content {
+    margin-top: 20px;
+}
+
+.intro {
+    margin-bottom: 30px;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff; /* White background for cards */
+    border-radius: 10px;
+    padding: 20px;
+    width: 200px; /* Fixed width for cards */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: #1d1d1d; /* Dark text */
+    transition: transform 0.2s;
+    text-align: center; /* Center text in the card */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.card h3 {
+    margin: 0; /* Remove default margin */
+}
+
+.card p {
+    margin: 10px 0 0; /* Add margin for spacing */
+}
