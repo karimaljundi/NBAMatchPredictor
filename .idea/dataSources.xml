@@ -11,6 +11,20 @@
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.resource.type" value="Deployment" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="nba_stats@nbaplayerdir.c5q4emec0hr3.us-east-2.rds.amazonaws.com" uuid="6df37bb3-d4ac-4bb9-848a-8a0a1ad12ae6">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://nbaplayerdir.c5q4emec0hr3.us-east-2.rds.amazonaws.com:5432/nba_stats</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
         <property name="com.intellij.clouds.kubernetes.db.container.port" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
