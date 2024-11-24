@@ -20,7 +20,7 @@ const Search = () => {
   }, [location]);
 
   const fetchPlayers = async (name) => {
-    const response = await fetch(`http://localhost:8080/api/v1/player?name=${name}`);
+    const response = await fetch(`http://3.17.143.133:8080/api/v1/player?name=${name}`);
     const data = await response.json();
     setPlayers(data);
   };

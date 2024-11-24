@@ -8,7 +8,7 @@ const Positions = () => {
 
   useEffect(() => {
     const fetchPositions = async () => {
-      const response = await fetch('http://localhost:8080/api/v1/player');
+      const response = await fetch('http://3.17.143.133:8080/api/v1/player');
       const data = await response.json();
       const groupedByPosition = data.reduce((acc, player) => {
         if (!acc[player.pos]) {
